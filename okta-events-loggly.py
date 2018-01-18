@@ -11,8 +11,8 @@ import ConfigParser
 import lockfile
 
 
-OKTA_CONFIG="/etc/okta/config.properties"
-OKTA_START_TIME="/etc/okta/startTime.properties"
+OKTA_CONFIG="/etc/okta/config"
+OKTA_START_TIME="/etc/okta/starttime"
 OKTA_LOCK_FILE="/etc/okta/lock"
 
 # lock the script, so that another process cannot run it
@@ -85,24 +85,22 @@ def sendToLoggly(jsonData, restRecordLimit):
     headers = {"content-type": "text/plain"}
     # this will loop through each of the objects in the JSON list
     for data in jsonData:
-        log_data = json.dumps(data)
         try:
-            lastWrittenPublishedTime = data['published']
+            log_data = json.dumps(data)
             request = urllib2.Request(url, data=log_data, headers=headers)
             f = urllib2.urlopen(request)
             r = f.read()
+            lastWrittenPublishedTime = data['published']
         except urllib2.HTTPError, e:
-            if e.code != 200:
-              eventLogFile.write("Loggly service is unavailable: " + lastWrittenPublishedTime + "\n")
-              eventLogFile.write("Loggly response code:" + e.code + "\n")
-              break
+            eventLogFile.write("Loggly service is unavailable: " + lastWrittenPublishedTime + "\n")
+            eventLogFile.write("Loggly response code:" + e.code + "\n")
+            break
+        except Exceptions as e:
+            print 'Exception occured:' + str(e)
+            break
 
     # if loggly unavalble next run will pick up logs where it left off
     writeOffsetTimeToFile(lastWrittenPublishedTime)
-
-    # call the endpoint again if the data returned exceeds the limit returned
-    if (numberOfRows > int(restRecordLimit) - 1):
-        runit(org, token, restRecordLimit)
 
 
 # start this off
