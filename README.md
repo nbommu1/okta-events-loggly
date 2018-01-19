@@ -1,4 +1,4 @@
-#Okta Events sendings to loggly
+#Okta Events send to loggly
 
 This Python script will pull Okta events and send to loggly. Run it using a cron job.
 
