@@ -11,9 +11,9 @@ import ConfigParser
 import lockfile
 
 
-OKTA_CONFIG="/etc/okta/config"
-OKTA_START_TIME="/etc/okta/starttime"
-OKTA_LOCK_FILE="/etc/okta/lock"
+OKTA_CONFIG="/home/nbommu/config"
+OKTA_START_TIME="/home/nbommu/starttime"
+OKTA_LOCK_FILE="/tmp/lock"
 
 # lock the script, so that another process cannot run it
 
@@ -93,7 +93,6 @@ def sendToLoggly(jsonData, restRecordLimit):
             lastWrittenPublishedTime = data['published']
         except urllib2.HTTPError, e:
             eventLogFile.write("Loggly service is unavailable: " + lastWrittenPublishedTime + "\n")
-            eventLogFile.write("Loggly response code:" + e.code + "\n")
             break
         except Exceptions as e:
             print 'Exception occured:' + str(e)
