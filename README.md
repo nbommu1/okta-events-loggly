@@ -13,7 +13,7 @@ This Python script will pull Okta events and send to loggly. Run it using a cron
 # Setup
 1. Install the prerequisites.
 2. Add the necessary okta configuration information inside config.
-3. You can omit the contents for "startime". However, if you would like to have this script start collecting events before the current time, you will need to add the following line by line:
+3. You can omit the contents for "startime". However, if you would like to have this script start collecting events before the current time, you will need to add the following line:
  2017-12-23T19:37:42.000Z  
 
 # Thanks!
